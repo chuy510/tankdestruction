@@ -109,6 +109,8 @@ var cursors;
 var bullets;
 var fireRate = 100;
 var nextFire = 0;
+var healthBar;
+var health = 100;
 
 function create () {
 
@@ -193,6 +195,10 @@ function create () {
     game.camera.focusOnXY(0, 0);
 
     cursors = game.input.keyboard.createCursorKeys();
+    
+    //healthbar
+    var barConfig = {x: 250, y: -250, animationDuration: 200};
+    healthBar = new HealthBar(this.game, barConfig);
 
 }
 
@@ -204,6 +210,8 @@ function removeLogo () {
 }
 
 function update () {
+//    healthBar.setFixedToCamera(true);
+
 
     game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
 
@@ -271,6 +279,11 @@ function update () {
 function bulletHitPlayer (tank, bullet) {
 
     bullet.kill();
+    health -= 1;
+    healthBar.setPercent(health);
+    if(health < 0){
+        tank.kill();
+    }
 
 }
 
